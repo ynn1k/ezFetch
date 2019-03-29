@@ -31,6 +31,22 @@ ezFetch.prototype.post = function(url, data, callback) {
     this.http.send(JSON.stringify(data))
 };
 
+//make http delete request
+ezFetch.prototype.get = function(url, callback) {
+    this.http.open('DELETE', url, true);
+    //TODO: arrow function
+    let that = this;
+    this.http.onload = function() {
+        if(that.http.status === 200){
+            callback(null, "Deleted " + that.http.responseText);
+        } else {
+            callback('Error: ' + that.http.status);
+        }
+    };
+
+    this.http.send();
+};
+
 /*
  +
  *
@@ -61,10 +77,19 @@ const data = {
     body: 'this is a custom post'
 };
 
-http.post('https://jsonplaceholder.typicode.com/posts', data, function (err, post) {
+http.post('https://jsonplaceholder.typicode.com/posts', data, function (err, response) {
     if(err) {
         console.log(err);
     } else {
-        console.log(post);
+        console.log(response);
+    }
+});
+
+//delete post
+http.get('https://jsonplaceholder.typicode.com/posts/1', function (err, response) {
+    if(err) {
+        console.log(err);
+    } else{
+        console.log(response);
     }
 });
