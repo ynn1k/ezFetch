@@ -1,95 +1,64 @@
-function ezFetch() {
-    this.http = new XMLHttpRequest();
-};
-
-//make http get request
-ezFetch.prototype.get = function(url, callback) {
-    this.http.open('GET', url, true);
-    //TODO: arrow function
-    let that = this;
-    this.http.onload = function() {
-        if(that.http.status === 200){
-            callback(null, that.http.responseText);
-        } else {
-            callback('Error: ' + that.http.status);
-        }
-    };
-
-    this.http.send();
-};
-
-//make an http post request
-ezFetch.prototype.post = function(url, data, callback) {
-    this.http.open('POST', url, true);
-    this.http.setRequestHeader('Content-type', 'application/json');
-    //TODO: arrow function
-    let that = this;
-    this.http.onload = function() {
-        callback(null, that.http.responseText);
-    };
-
-    this.http.send(JSON.stringify(data))
-};
-
-//make http delete request
-ezFetch.prototype.get = function(url, callback) {
-    this.http.open('DELETE', url, true);
-    //TODO: arrow function
-    let that = this;
-    this.http.onload = function() {
-        if(that.http.status === 200){
-            callback(null, "Deleted " + that.http.responseText);
-        } else {
-            callback('Error: ' + that.http.status);
-        }
-    };
-
-    this.http.send();
-};
-
 /*
- +
+ * ezFetch library to interact with JSON APIs
  *
- *
+ * @author  Yannik Hewlik
+ * @license TheDoWhateverYouWant
  */
-const http = new ezFetch();
-//get posts
-http.get('https://jsonplaceholder.typicode.com/posts', function (err, posts) {
-    if(err) {
-        console.log(err);
-    } else{
-        console.log(posts);
+class  EzHTTP {
+    //make http get request
+    get(url){
+        return new Promise((resolve, reject) => {
+            fetch(url)
+                .then(response => response.json())
+                .then(data => resolve(data))
+                .catch(error => reject(error));
+        })
     }
-});
 
-//get single post
-http.get('https://jsonplaceholder.typicode.com/posts/1', function (err, post) {
-    if(err) {
-        console.log(err);
-    } else{
-        console.log(post);
+    //make http post request
+    post(url, data){
+        return new Promise((resolve, reject) => {
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(data => resolve(data))
+                .catch(error => reject(error));
+        })
     }
-});
 
-//post data
-const data = {
-    title: 'custom post',
-    body: 'this is a custom post'
-};
-
-http.post('https://jsonplaceholder.typicode.com/posts', data, function (err, response) {
-    if(err) {
-        console.log(err);
-    } else {
-        console.log(response);
+    //make http put request
+    put(url, data){
+        return new Promise((resolve, reject) => {
+            fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(data => resolve(data))
+                .catch(error => reject(error));
+        })
     }
-});
 
-//delete post
-http.get('https://jsonplaceholder.typicode.com/posts/1', function (err, response) {
-    if(err) {
-        console.log(err);
-    } else{
-        console.log(response);
+    //make http delete request
+    delete(url){
+        return new Promise((resolve, reject) => {
+            fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    'Content-type': 'application/json'
+                }
+            })
+                .then(response => response.json())
+                .then(data => resolve("Resource deleted... " + data))
+                .catch(error => reject(error));
+        })
     }
-});
+}

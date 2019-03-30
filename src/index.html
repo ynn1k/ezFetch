@@ -10,6 +10,39 @@
 <body>
     <h1>ezFetch</h1>
 
+    <div id="output"></div>
+
     <script src="script.min.js"></script>
+
+    <script>
+        const http = new EzHTTP;
+
+        //get users
+        http.get('https://jsonplaceholder.typicode.com/users')
+            .then(data => console.log(data))
+            .catch(error => console.log(error));
+
+        //user data to post
+        const data = {
+            name: "Max Mustermann",
+            username: "MxMstrmn",
+            email: "m.mustermann@aol.com"
+        };
+
+        //create user
+        http.post('https://jsonplaceholder.typicode.com/users', data)
+            .then(data => console.log(data))
+            .catch(error => console.log(error));
+
+        //update user
+        http.put('https://jsonplaceholder.typicode.com/users/2', data)
+            .then(data => console.log(data))
+            .catch(error => console.log(error));
+
+        //delete user
+        http.delete('https://jsonplaceholder.typicode.com/users/2')
+            .then(data => console.log(data))
+            .catch(error => console.log(error));
+    </script>
 </body>
 </html>
