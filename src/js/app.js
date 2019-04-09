@@ -2,7 +2,8 @@
  * ezFetch library to interact with JSON APIs
  *
  * @author  Yannik Hewlik
- * @license TheDoWhateverYouWant
+ * @email   hi@yannik.dev
+ * @license Beerware [https://en.wikipedia.org/wiki/Beerware]
  */
 class  EzHTTP {
     //make http get request
