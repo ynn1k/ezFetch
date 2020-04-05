@@ -51,3 +51,5 @@ class  EzHTTP {
         return responseData;
     }
 }
+
+export const http = new EzHTTP();
